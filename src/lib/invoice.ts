@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import { PaymentLink } from "./types";
+import { SOLANA_NETWORK } from "./constants";
 
 /**
  * Generate an invoice PDF with on-chain payment proof
@@ -179,8 +180,9 @@ export function generateInvoice(payment: PaymentLink): jsPDF {
     y += 5;
     doc.text(`Transaction: ${payment.transactionSignature}`, 20, y);
     y += 5;
+    const clusterParam = SOLANA_NETWORK === "mainnet-beta" ? "" : `?cluster=${SOLANA_NETWORK}`;
     doc.text(
-      `Verify: https://explorer.solana.com/tx/${payment.transactionSignature}`,
+      `Verify: https://explorer.solana.com/tx/${payment.transactionSignature}${clusterParam}`,
       20,
       y
     );
