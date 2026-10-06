@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EUPay — Stablecoin Payment Links for EU Freelancers
+
+**MiCA-compliant payment links on Solana.** Create a link, share it with your client, get paid in EURC or USDC. Instant settlement, on-chain verification, auto-generated invoices.
+
+Built for the [Colosseum Crypto World's Fair Hackathon](https://www.colosseum.org/) — Superteam Netherlands Track.
+
+## The Problem
+
+EU freelancers face 3-5 day bank transfers, 3-8% cross-border fees, and — since MiCA took effect in July 2026 — no simple way to accept regulated stablecoin payments with proper invoicing.
+
+## The Solution
+
+EUPay is the simplest way for EU freelancers to get paid in stablecoins:
+
+1. **Create** a payment link (amount, currency, service description)
+2. **Share** the link with your client
+3. **Get paid** — client scans the QR code or clicks to pay from any Solana wallet
+4. **Invoice** — auto-generated MiCA-compliant PDF with on-chain verification
+
+No smart contracts. No wallet connection required for the freelancer to create links. Just standard SPL token transfers via Solana Pay.
+
+## Supported Currencies
+
+- 🇪🇺 **EURC** (Euro Coin) — MiCA-regulated euro stablecoin by Circle
+- 🇺🇸 **USDC** (USD Coin) — for international clients
+
+## Tech Stack
+
+- **Next.js** — React framework
+- **Solana Pay** — payment URL and QR code generation
+- **@solana/web3.js** — blockchain interaction and payment detection
+- **jsPDF** — invoice PDF generation
+- **Tailwind CSS** — styling
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── page.tsx              # Homepage — create payment link form
+│   ├── pay/[id]/page.tsx     # Payment page — QR code, pay button, status
+│   └── dashboard/page.tsx    # Dashboard — track all payment links
+├── components/
+│   ├── CreatePaymentForm.tsx # Payment link creation form
+│   ├── PaymentPage.tsx       # Payment page with QR, polling, invoice
+│   ├── Dashboard.tsx         # Payment links list and stats
+│   └── Header.tsx            # Navigation header
+└── lib/
+    ├── constants.ts          # Token mints, RPC config
+    ├── solana.ts             # Solana Pay URLs, payment detection
+    ├── invoice.ts            # MiCA-compliant PDF invoice generation
+    ├── storage.ts            # localStorage-based storage (MVP)
+    └── types.ts              # TypeScript types
+```
 
-## Learn More
+## Why Solana
 
-To learn more about Next.js, take a look at the following resources:
+- Sub-second finality
+- < $0.01 transaction fees
+- Native EURC and USDC support
+- Solana Pay standard for payment URLs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Why Now
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- MiCA fully enforced across EU (July 2026)
+- Netherlands was the first EU country to enforce MiCA (July 2025)
+- $835M euro stablecoin market, Solana holds 14.8%
+- No existing tool combines payment links + EU-compliant invoicing for freelancers
 
-## Deploy on Vercel
+## Team
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Built for the Superteam Netherlands track by a UK-based market researcher and a Netherlands-based collaborator.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT
