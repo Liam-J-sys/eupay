@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto max-w-5xl px-4 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="EUPay" width={90} height={27} className="h-6 w-auto" />
+            <Image src="/logo.png" alt="EUPay" width={90} height={27} className="h-6 w-auto dark:brightness-0 dark:invert" />
             <span className="text-xs text-slate-400 dark:text-slate-500">
               Stablecoin payments on Solana
             </span>

@@ -8,10 +8,26 @@ import { isValidSolanaAddress } from "@/lib/solana";
 import { savePaymentLink } from "@/lib/storage";
 import type { PaymentLink, CreatePaymentLinkForm } from "@/lib/types";
 
-export default function CreatePaymentForm() {
+const DEMO_DATA: CreatePaymentLinkForm = {
+  recipientWallet: "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+  amount: "2500",
+  currency: "EURC",
+  description: "Website redesign — homepage, 3 inner pages, and mobile responsive version",
+  freelancerName: "Maria van der Berg",
+  freelancerEmail: "maria@example.com",
+  clientName: "Acme Corp",
+};
+
+interface CreatePaymentFormProps {
+  demoMode?: boolean;
+  onDemoConsumed?: () => void;
+}
+
+export default function CreatePaymentForm({ demoMode, onDemoConsumed }: CreatePaymentFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [demoApplied, setDemoApplied] = useState(false);
 
   const [form, setForm] = useState<CreatePaymentLinkForm>({
     recipientWallet: "",
@@ -22,6 +38,14 @@ export default function CreatePaymentForm() {
     freelancerEmail: "",
     clientName: "",
   });
+
+  // Apply demo data when demoMode turns on
+  if (demoMode && !demoApplied) {
+    setForm(DEMO_DATA);
+    setDemoApplied(true);
+    setErrors({});
+    onDemoConsumed?.();
+  }
 
   function updateField(field: keyof CreatePaymentLinkForm, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));

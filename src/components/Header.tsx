@@ -9,7 +9,7 @@ export default function Header() {
     <header className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-1">
-          <Image src="/logo.png" alt="EUPay" width={120} height={36} className="h-8 w-auto" priority />
+          <Image src="/logo.png" alt="EUPay" width={120} height={36} className="h-8 w-auto dark:brightness-0 dark:invert" priority />
         </Link>
         <nav className="flex items-center gap-4">
           <Link
