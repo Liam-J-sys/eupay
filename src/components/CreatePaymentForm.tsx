@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { SUPPORTED_CURRENCIES } from "@/lib/constants";
 import { isValidSolanaAddress } from "@/lib/solana";
-import { savePaymentLink } from "@/lib/storage";
+import { savePaymentLink, encodePaymentData } from "@/lib/storage";
 import type { PaymentLink, CreatePaymentLinkForm } from "@/lib/types";
 
 const DEMO_DATA: CreatePaymentLinkForm = {
@@ -104,7 +104,8 @@ export default function CreatePaymentForm({ demoMode, onDemoConsumed }: CreatePa
     };
 
     savePaymentLink(paymentLink);
-    router.push(`/pay/${paymentLink.id}?created=true`);
+    const data = encodePaymentData(paymentLink);
+    router.push(`/pay/${paymentLink.id}?created=true&d=${data}`);
   }
 
   const inputBase = "w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500";

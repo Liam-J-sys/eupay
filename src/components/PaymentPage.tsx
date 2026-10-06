@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { buildSolanaPayUrl, checkForPayment, getExplorerUrl } from "@/lib/solana";
-import { getPaymentLink, updatePaymentStatus } from "@/lib/storage";
+import { getPaymentLink, updatePaymentStatus, decodePaymentData, savePaymentLink, encodePaymentData } from "@/lib/storage";
 import { generateInvoice } from "@/lib/invoice";
 import { SOLANA_NETWORK } from "@/lib/constants";
 import type { PaymentLink } from "@/lib/types";
@@ -11,18 +11,30 @@ import type { PaymentLink } from "@/lib/types";
 interface PaymentPageProps {
   paymentId: string;
   isCreator?: boolean;
+  encodedData?: string | null;
 }
 
-export default function PaymentPage({ paymentId, isCreator }: PaymentPageProps) {
+export default function PaymentPage({ paymentId, isCreator, encodedData }: PaymentPageProps) {
   const [payment, setPayment] = useState<PaymentLink | null>(null);
   const [copied, setCopied] = useState(false);
   const [polling, setPolling] = useState(false);
   const [showShareToast, setShowShareToast] = useState(false);
 
   useEffect(() => {
-    const link = getPaymentLink(paymentId);
+    // Try localStorage first
+    let link = getPaymentLink(paymentId);
+
+    // Fall back to URL-encoded data (for cross-device sharing)
+    if (!link && encodedData) {
+      link = decodePaymentData(paymentId, encodedData);
+      if (link) {
+        // Cache in localStorage for subsequent visits
+        savePaymentLink(link);
+      }
+    }
+
     setPayment(link);
-  }, [paymentId]);
+  }, [paymentId, encodedData]);
 
   const pollPayment = useCallback(async () => {
     if (!payment || payment.status === "paid" || polling) return;
@@ -89,7 +101,10 @@ export default function PaymentPage({ paymentId, isCreator }: PaymentPageProps) 
     memo: payment.id.slice(0, 8),
   });
 
-  const paymentPageUrl = typeof window !== "undefined" ? window.location.href.split("?")[0] : "";
+  // Build shareable URL with encoded payment data so it works on any device
+  const paymentPageUrl = typeof window !== "undefined"
+    ? `${window.location.href.split("?")[0]}?d=${encodedData || encodePaymentData(payment)}`
+    : "";
 
   function copyLink() {
     navigator.clipboard.writeText(paymentPageUrl);
@@ -130,10 +145,23 @@ export default function PaymentPage({ paymentId, isCreator }: PaymentPageProps) 
 
   const isPaid = payment.status === "paid";
   const currencySymbol = payment.currency === "EURC" ? "€" : "$";
+  const isDevnet = SOLANA_NETWORK !== "mainnet-beta";
 
   return (
     <div className="min-h-[80vh] flex items-start justify-center pt-8 pb-16">
       <div className="w-full max-w-md">
+        {/* Devnet notice */}
+        {isDevnet && !isPaid && (
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl px-4 py-3 mb-4">
+            <div className="flex items-center gap-2">
+              <span className="text-amber-600 dark:text-amber-400 text-sm">⚠</span>
+              <p className="text-xs text-amber-800 dark:text-amber-300">
+                <span className="font-semibold">Devnet mode</span> — This is a demo using test tokens. No real funds are involved. Use the &quot;Mark as Paid&quot; button to simulate a payment.
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Creator banner */}
         {isCreator && !isPaid && (
           <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl p-4 mb-5">
@@ -248,7 +276,7 @@ export default function PaymentPage({ paymentId, isCreator }: PaymentPageProps) 
             ) : (
               <div className="text-center">
                 <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                  Scan with a Solana wallet to pay
+                  {isDevnet ? "Scan with a Solana wallet set to devnet" : "Scan with a Solana wallet to pay"}
                 </p>
                 <div className="inline-block p-4 bg-white border-2 border-slate-100 dark:border-slate-600 rounded-2xl">
                   <QRCodeSVG
@@ -262,22 +290,22 @@ export default function PaymentPage({ paymentId, isCreator }: PaymentPageProps) 
                 </div>
 
                 <div className="mt-5 space-y-2">
+                  <button
+                    onClick={markAsPaid}
+                    className="w-full bg-blue-600 text-white py-3 rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    {isDevnet ? "Simulate Payment (Demo)" : "Demo: Mark as Paid"}
+                  </button>
+
                   <a
                     href={solanaPayUrl}
-                    className="flex items-center justify-center gap-2 w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-medium hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors text-sm"
+                    className="flex items-center justify-center gap-2 w-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 py-2.5 rounded-xl text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M19.05 4.91A9.816 9.816 0 0012.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01z" />
                     </svg>
                     Pay with Solana Wallet
                   </a>
-
-                  <button
-                    onClick={markAsPaid}
-                    className="w-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 py-2.5 rounded-xl text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                  >
-                    Demo: Mark as Paid
-                  </button>
                 </div>
 
                 <div className="mt-4 flex items-center gap-2 justify-center">

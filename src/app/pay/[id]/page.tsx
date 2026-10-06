@@ -12,10 +12,11 @@ export default function PayPage({
   const { id } = use(params);
   const searchParams = useSearchParams();
   const isCreator = searchParams.get("created") === "true";
+  const encodedData = searchParams.get("d");
 
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
-      <PaymentPage paymentId={id} isCreator={isCreator} />
+      <PaymentPage paymentId={id} isCreator={isCreator} encodedData={encodedData} />
     </div>
   );
 }
