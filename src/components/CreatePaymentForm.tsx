@@ -83,18 +83,20 @@ export default function CreatePaymentForm() {
     router.push(`/pay/${paymentLink.id}?created=true`);
   }
 
+  const inputBase = "w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500";
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Your details */}
       <div>
-        <h3 className="text-sm font-semibold text-slate-900 mb-3 uppercase tracking-wide">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3 uppercase tracking-wide">
           Your Details
         </h3>
         <div className="space-y-4">
           <div>
             <label
               htmlFor="freelancerName"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
             >
               Your Name *
             </label>
@@ -104,8 +106,8 @@ export default function CreatePaymentForm() {
               value={form.freelancerName}
               onChange={(e) => updateField("freelancerName", e.target.value)}
               placeholder="e.g. Maria van der Berg"
-              className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.freelancerName ? "border-red-400" : "border-slate-300"
+              className={`${inputBase} ${
+                errors.freelancerName ? "border-red-400" : "border-slate-300 dark:border-slate-600"
               }`}
             />
             {errors.freelancerName && (
@@ -118,7 +120,7 @@ export default function CreatePaymentForm() {
           <div>
             <label
               htmlFor="freelancerEmail"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
             >
               Your Email (optional)
             </label>
@@ -128,14 +130,14 @@ export default function CreatePaymentForm() {
               value={form.freelancerEmail}
               onChange={(e) => updateField("freelancerEmail", e.target.value)}
               placeholder="maria@example.com"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`${inputBase} border-slate-300 dark:border-slate-600`}
             />
           </div>
 
           <div>
             <label
               htmlFor="recipientWallet"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
             >
               Your Solana Wallet Address *
             </label>
@@ -145,8 +147,8 @@ export default function CreatePaymentForm() {
               value={form.recipientWallet}
               onChange={(e) => updateField("recipientWallet", e.target.value)}
               placeholder="e.g. 7xKX..."
-              className={`w-full px-3 py-2 border rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.recipientWallet ? "border-red-400" : "border-slate-300"
+              className={`${inputBase} font-mono ${
+                errors.recipientWallet ? "border-red-400" : "border-slate-300 dark:border-slate-600"
               }`}
             />
             {errors.recipientWallet && (
@@ -154,7 +156,7 @@ export default function CreatePaymentForm() {
                 {errors.recipientWallet}
               </p>
             )}
-            <p className="text-slate-500 text-xs mt-1">
+            <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">
               This is where you&apos;ll receive the payment
             </p>
           </div>
@@ -163,14 +165,14 @@ export default function CreatePaymentForm() {
 
       {/* Payment details */}
       <div>
-        <h3 className="text-sm font-semibold text-slate-900 mb-3 uppercase tracking-wide">
+        <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3 uppercase tracking-wide">
           Payment Details
         </h3>
         <div className="space-y-4">
           <div>
             <label
               htmlFor="clientName"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
             >
               Client Name (optional)
             </label>
@@ -180,7 +182,7 @@ export default function CreatePaymentForm() {
               value={form.clientName}
               onChange={(e) => updateField("clientName", e.target.value)}
               placeholder="e.g. Acme Corp"
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`${inputBase} border-slate-300 dark:border-slate-600`}
             />
           </div>
 
@@ -188,7 +190,7 @@ export default function CreatePaymentForm() {
             <div>
               <label
                 htmlFor="amount"
-                className="block text-sm font-medium text-slate-700 mb-1"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
               >
                 Amount *
               </label>
@@ -200,8 +202,8 @@ export default function CreatePaymentForm() {
                 value={form.amount}
                 onChange={(e) => updateField("amount", e.target.value)}
                 placeholder="250.00"
-                className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.amount ? "border-red-400" : "border-slate-300"
+                className={`${inputBase} ${
+                  errors.amount ? "border-red-400" : "border-slate-300 dark:border-slate-600"
                 }`}
               />
               {errors.amount && (
@@ -212,7 +214,7 @@ export default function CreatePaymentForm() {
             <div>
               <label
                 htmlFor="currency"
-                className="block text-sm font-medium text-slate-700 mb-1"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
               >
                 Currency *
               </label>
@@ -222,7 +224,7 @@ export default function CreatePaymentForm() {
                 onChange={(e) =>
                   updateField("currency", e.target.value)
                 }
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                className={`${inputBase} border-slate-300 dark:border-slate-600`}
               >
                 {SUPPORTED_CURRENCIES.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -236,7 +238,7 @@ export default function CreatePaymentForm() {
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-slate-700 mb-1"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
             >
               Description / Service *
             </label>
@@ -246,8 +248,8 @@ export default function CreatePaymentForm() {
               onChange={(e) => updateField("description", e.target.value)}
               placeholder="e.g. Website design — homepage and 3 inner pages"
               rows={3}
-              className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
-                errors.description ? "border-red-400" : "border-slate-300"
+              className={`${inputBase} resize-none ${
+                errors.description ? "border-red-400" : "border-slate-300 dark:border-slate-600"
               }`}
             />
             {errors.description && (

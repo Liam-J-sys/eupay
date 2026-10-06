@@ -9,10 +9,24 @@ export const metadata: Metadata = {
     "Create MiCA-compliant payment links. Accept EURC and USDC on Solana. Get paid in seconds, not days.",
 };
 
+const themeScript = `
+(function() {
+  try {
+    var t = localStorage.getItem('eupay-theme');
+    if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  } catch(e) {}
+})();
+`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-slate-50">
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-full flex flex-col bg-slate-50 dark:bg-slate-950">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
