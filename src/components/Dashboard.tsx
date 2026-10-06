@@ -9,9 +9,10 @@ import type { PaymentLink } from "@/lib/types";
 export default function Dashboard() {
   const [links, setLinks] = useState<PaymentLink[]>([]);
   const [filter, setFilter] = useState<"all" | "pending" | "paid">("all");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
-    setLinks(getPaymentLinks().reverse()); // newest first
+    setLinks(getPaymentLinks().reverse());
   }, []);
 
   const filtered =
@@ -33,21 +34,27 @@ export default function Dashboard() {
   function copyLink(id: string) {
     const url = `${window.location.origin}/pay/${id}`;
     navigator.clipboard.writeText(url);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   }
 
   if (links.length === 0) {
     return (
-      <div className="text-center py-16">
-        <div className="text-6xl mb-4">📭</div>
-        <h2 className="text-xl font-semibold text-slate-900 mb-2">
+      <div className="text-center py-20">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center">
+          <svg className="w-7 h-7 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.818-1.5l4.5-4.5a4.5 4.5 0 00-6.364-6.364l-1.757 1.757" />
+          </svg>
+        </div>
+        <h2 className="text-lg font-semibold text-slate-900 mb-1">
           No payment links yet
         </h2>
-        <p className="text-slate-600 mb-6">
-          Create your first payment link to get started.
+        <p className="text-sm text-slate-500 mb-6">
+          Create your first link to start getting paid.
         </p>
         <Link
           href="/"
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          className="inline-flex bg-blue-600 text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors"
         >
           Create Payment Link
         </Link>
@@ -58,48 +65,42 @@ export default function Dashboard() {
   return (
     <div>
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-3 gap-3 mb-6">
         <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <p className="text-xs text-slate-500 uppercase tracking-wide">
-            Total Links
-          </p>
+          <p className="text-xs text-slate-500 font-medium">Total links</p>
           <p className="text-2xl font-bold text-slate-900 mt-1">
             {links.length}
           </p>
         </div>
         <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <p className="text-xs text-slate-500 uppercase tracking-wide">
-            Received
-          </p>
+          <p className="text-xs text-slate-500 font-medium">Received</p>
           <p className="text-2xl font-bold text-green-600 mt-1">
-            €{totalPaid.toFixed(0)}
+            {"€"}{totalPaid.toFixed(0)}
           </p>
         </div>
         <div className="bg-white border border-slate-200 rounded-xl p-4">
-          <p className="text-xs text-slate-500 uppercase tracking-wide">
-            Pending
-          </p>
+          <p className="text-xs text-slate-500 font-medium">Pending</p>
           <p className="text-2xl font-bold text-amber-600 mt-1">
-            €{totalPending.toFixed(0)}
+            {"€"}{totalPending.toFixed(0)}
           </p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-1.5 mb-4 bg-slate-100 p-1 rounded-lg w-fit">
         {(["all", "pending", "paid"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-3.5 py-1.5 rounded-md text-sm font-medium transition-colors ${
               filter === f
-                ? "bg-blue-600 text-white"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                ? "bg-white text-slate-900 shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
             {f !== "all" && (
-              <span className="ml-1.5 text-xs opacity-70">
+              <span className={`ml-1.5 text-xs ${filter === f ? "text-slate-500" : "text-slate-400"}`}>
                 {links.filter((l) => l.status === f).length}
               </span>
             )}
@@ -108,57 +109,63 @@ export default function Dashboard() {
       </div>
 
       {/* Links list */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         {filtered.map((link) => (
           <div
             key={link.id}
             className="bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 transition-colors"
           >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-semibold text-slate-900 truncate">
                     {link.description}
                   </h3>
                   <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ${
                       link.status === "paid"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-amber-100 text-amber-800"
+                        ? "bg-green-50 text-green-700"
+                        : "bg-amber-50 text-amber-700"
                     }`}
                   >
-                    {link.status === "paid" ? "✓ Paid" : "Pending"}
+                    {link.status === "paid" ? "Paid" : "Pending"}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   {link.clientName ? `${link.clientName} · ` : ""}
-                  {new Date(link.createdAt).toLocaleDateString()}
+                  {new Date(link.createdAt).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </p>
               </div>
-              <p className="text-lg font-bold text-slate-900 ml-4">
+              <p className="text-lg font-bold text-slate-900 tabular-nums">
                 {link.amount.toFixed(2)}{" "}
-                <span className="text-sm text-slate-500">{link.currency}</span>
+                <span className="text-xs font-medium text-slate-400">
+                  {link.currency}
+                </span>
               </p>
             </div>
 
-            <div className="flex gap-2 mt-3">
+            <div className="flex gap-1.5 mt-3">
               <Link
                 href={`/pay/${link.id}`}
-                className="text-xs bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition-colors"
+                className="text-xs text-slate-600 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors font-medium"
               >
                 View
               </Link>
               <button
                 onClick={() => copyLink(link.id)}
-                className="text-xs bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition-colors"
+                className="text-xs text-slate-600 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors font-medium"
               >
-                Copy Link
+                {copiedId === link.id ? "Copied" : "Copy Link"}
               </button>
               <button
                 onClick={() => downloadInvoice(link)}
-                className="text-xs bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition-colors"
+                className="text-xs text-slate-600 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors font-medium"
               >
-                Invoice PDF
+                Invoice
               </button>
             </div>
           </div>
