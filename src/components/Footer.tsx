@@ -11,7 +11,7 @@ export default function Footer() {
             </div>
             <span className="text-sm font-semibold text-slate-900 dark:text-white">EUPay</span>
             <span className="text-xs text-slate-400 dark:text-slate-500">
-              MiCA-compliant payments on Solana
+              Stablecoin payments on Solana
             </span>
           </div>
           <div className="flex items-center gap-5">

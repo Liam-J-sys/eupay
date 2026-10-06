@@ -30,4 +30,4 @@ export const SUPPORTED_CURRENCIES = [
 
 // App metadata
 export const APP_NAME = "EUPay";
-export const APP_DESCRIPTION = "MiCA-compliant stablecoin payment links for EU freelancers on Solana";
+export const APP_DESCRIPTION = "Stablecoin payment links with automatic invoices for EU freelancers on Solana";

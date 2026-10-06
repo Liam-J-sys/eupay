@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import { PaymentLink } from "./types";
 
 /**
- * Generate a MiCA-compliant invoice PDF
+ * Generate an invoice PDF with on-chain payment proof
  */
 export function generateInvoice(payment: PaymentLink): jsPDF {
   const doc = new jsPDF();
@@ -24,7 +24,7 @@ export function generateInvoice(payment: PaymentLink): jsPDF {
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text("MiCA-Compliant Stablecoin Invoice", pageWidth - 20, 20, {
+  doc.text("Stablecoin Payment Invoice", pageWidth - 20, 20, {
     align: "right",
   });
   doc.text("Powered by Solana", pageWidth - 20, 28, { align: "right" });
@@ -186,7 +186,7 @@ export function generateInvoice(payment: PaymentLink): jsPDF {
     );
   }
 
-  // MiCA compliance footer
+  // Regulatory context footer
   y = doc.internal.pageSize.getHeight() - 30;
   doc.setDrawColor(226, 232, 240);
   doc.line(20, y, pageWidth - 20, y);
@@ -195,13 +195,13 @@ export function generateInvoice(payment: PaymentLink): jsPDF {
   doc.setFontSize(7);
   doc.setTextColor(secondary[0], secondary[1], secondary[2]);
   doc.text(
-    "This invoice documents a payment made using MiCA-regulated stablecoins on the Solana blockchain.",
+    "This invoice documents a stablecoin payment settled on the Solana blockchain.",
     20,
     y
   );
   y += 4;
   doc.text(
-    `Payment settled in ${payment.currency} — an EU-regulated electronic money token under MiCA (Markets in Crypto-Assets Regulation).`,
+    `Payment settled in ${payment.currency} — an electronic money token issued by Circle.`,
     20,
     y
   );

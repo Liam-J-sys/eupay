@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "EUPay — Stablecoin Payment Links for EU Freelancers",
   description:
-    "Create MiCA-compliant payment links. Accept EURC and USDC on Solana. Get paid in seconds, not days.",
+    "Create stablecoin payment links with automatic invoices and on-chain proof. Accept EURC and USDC on Solana.",
 };
 
 const themeScript = `

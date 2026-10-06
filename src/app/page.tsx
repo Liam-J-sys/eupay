@@ -16,7 +16,7 @@ export default function HomePage() {
           <p className="text-lg text-slate-500 dark:text-slate-400 max-w-lg mx-auto mb-8 leading-relaxed">
             Create a payment link for any invoice. Your client pays in EURC or
             USDC on Solana — you get the money instantly, with a
-            MiCA-compliant invoice generated automatically.
+            invoice with on-chain proof generated automatically.
           </p>
           <div className="flex items-center justify-center gap-3">
             <a
@@ -74,8 +74,8 @@ export default function HomePage() {
                 Get paid, get your invoice
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                Payment settles in seconds on Solana. A MiCA-compliant PDF
-                invoice with the on-chain transaction proof is ready to download.
+                Payment settles in seconds on Solana. A PDF invoice with
+                on-chain transaction proof is ready to download.
               </p>
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function HomePage() {
             </div>
             <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-5">
               <p className="font-semibold text-slate-900 dark:text-white text-sm mb-1.5">
-                MiCA-compliant invoices
+                Automatic invoices
               </p>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
                 Every payment generates a PDF invoice referencing the on-chain
