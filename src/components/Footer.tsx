@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -6,10 +7,7 @@ export default function Footer() {
       <div className="mx-auto max-w-5xl px-4 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
-              <span className="text-white font-bold text-[9px]">EU</span>
-            </div>
-            <span className="text-sm font-semibold text-slate-900 dark:text-white">EUPay</span>
+            <Image src="/logo.png" alt="EUPay" width={90} height={27} className="h-6 w-auto" />
             <span className="text-xs text-slate-400 dark:text-slate-500">
               Stablecoin payments on Solana
             </span>
