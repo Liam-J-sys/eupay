@@ -3,6 +3,8 @@
 import { useState } from "react";
 import CreatePaymentForm from "@/components/CreatePaymentForm";
 import Link from "next/link";
+import { BackgroundPaths } from "@/components/ui/background-paths";
+import PaymentFlowBeam from "@/components/PaymentFlowBeam";
 
 export default function HomePage() {
   const [demoMode, setDemoMode] = useState(false);
@@ -18,8 +20,9 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
-        <div className="mx-auto max-w-3xl px-4 pt-16 pb-20 text-center">
+      <section className="relative overflow-hidden bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+        <BackgroundPaths />
+        <div className="relative z-10 mx-auto max-w-3xl px-4 pt-16 pb-20 text-center">
           <p className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-4 tracking-wide">
             Solana Pay for EU freelancers
           </p>
@@ -149,6 +152,9 @@ export default function HomePage() {
                 transaction and marks the invoice paid.
               </p>
             </div>
+          </div>
+          <div className="mt-12">
+            <PaymentFlowBeam />
           </div>
           <div className="text-center mt-10">
             <button
