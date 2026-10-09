@@ -52,7 +52,7 @@ export default function HomePage() {
       </section>
 
       {/* Why EUPay — Visual flow comparison */}
-      <section className="bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
+      <section id="why" className="scroll-mt-20 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
         <div className="mx-auto max-w-3xl px-4 py-16">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-10 text-center">
             Why EUPay?
@@ -112,7 +112,7 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+      <section id="how-it-works" className="scroll-mt-20 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
         <div className="mx-auto max-w-3xl px-4 py-16">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-10 text-center">
             How it works
@@ -171,7 +171,7 @@ export default function HomePage() {
       </section>
 
       {/* Built for Europe + Why stablecoins — consolidated */}
-      <section className="bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
+      <section id="europe" className="scroll-mt-20 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
         <div className="mx-auto max-w-3xl px-4 py-16">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 text-center">
             Built for Europe&apos;s stablecoin economy
@@ -223,7 +223,7 @@ export default function HomePage() {
       </section>
 
       {/* For freelancers / For clients */}
-      <section className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+      <section id="benefits" className="scroll-mt-20 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
         <div className="mx-auto max-w-3xl px-4 py-16">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-10 text-center">
             Zero friction for both sides
@@ -287,7 +287,7 @@ export default function HomePage() {
       </section>
 
       {/* Roadmap — with timeline */}
-      <section className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+      <section id="roadmap" className="scroll-mt-20 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
         <div className="mx-auto max-w-3xl px-4 py-16">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-3 text-center">
             Roadmap
@@ -346,7 +346,7 @@ export default function HomePage() {
       </section>
 
       {/* Create form */}
-      <section id="create" className="bg-slate-50 dark:bg-slate-950">
+      <section id="create" className="scroll-mt-20 bg-slate-50 dark:bg-slate-950">
         <div className="mx-auto max-w-xl px-4 py-16">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
