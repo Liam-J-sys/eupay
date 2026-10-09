@@ -65,7 +65,9 @@ export function encodePaymentData(link: PaymentLink): string {
     cl: link.clientName || "",
     t: link.createdAt,
   };
-  return btoa(JSON.stringify(compact))
+  // Use encodeURIComponent to handle Unicode characters (em dashes, accents, etc.)
+  // that btoa() alone cannot encode (Latin1 range only)
+  return btoa(encodeURIComponent(JSON.stringify(compact)))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/, "");
@@ -81,7 +83,7 @@ export function decodePaymentData(
 ): PaymentLink | null {
   try {
     const padded = encoded.replace(/-/g, "+").replace(/_/g, "/");
-    const json = atob(padded);
+    const json = decodeURIComponent(atob(padded));
     const compact = JSON.parse(json);
     return {
       id,
